@@ -22,6 +22,7 @@ def get_mac_address(ip):
 
 def add_to_iptables(mac):
 	Popen(['iptables', '-A', 'AUTHORIZED', '-m', 'mac', '--mac-source', mac, '-j', 'ACCEPT'])
+	Popen(['iptables', '-t', 'nat', '-A', 'AUTHORIZED', '-m', 'mac', '--mac-source', mac, '-j', 'ACCEPT'])
 
 def authorize(ip):
 	mac = get_mac_address(ip)
@@ -48,5 +49,6 @@ def login_failed():
 	return render_template('login_failed.html')
 
 @app.route('/')
+@app.route('/generate_204')
 def index():
 	return render_template('index.html')
